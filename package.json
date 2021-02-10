@@ -1,0 +1,24 @@
+{
+  "name": "watermark-generator",
+  "version": "1.0.0",
+  "description": "A simple app adding watermark to the image",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olaf-wilkosz/watermark-generator.git"
+  },
+  "keywords": [
+    "watermark"
+  ],
+  "author": "Olaf Wilkosz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olaf-wilkosz/watermark-generator/issues"
+  },
+  "homepage": "https://github.com/olaf-wilkosz/watermark-generator#readme"
+}
