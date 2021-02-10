@@ -55,6 +55,23 @@ const startApp = async () => {
     choices: ['Text watermark', 'Image watermark'],
   }]);
 
+  if (options.watermarkType === 'Text watermark') {
+    const text = await inquirer.prompt([{
+      name: 'value',
+      type: 'input',
+      message: 'Type your watermark text:',
+    }]);
+    options.watermarkText = text.value;
+  }
+  else {
+    const image = await inquirer.prompt([{
+      name: 'filename',
+      type: 'input',
+      message: 'Type your watermark name:',
+      default: 'logo.png',
+    }]);
+    options.watermarkImage = image.filename;
+  }
 }
 
 startApp();
