@@ -4,6 +4,7 @@
   "description": "A simple app adding watermark to the image",
   "main": "app.js",
   "dependencies": {
+    "inquirer": "^6.5.0",
     "jimp": "^0.6.4"
   },
   "devDependencies": {},
