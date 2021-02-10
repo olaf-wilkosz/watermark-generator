@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A simple app adding watermark to the image",
   "main": "app.js",
-  "dependencies": {},
+  "dependencies": {
+    "jimp": "^0.6.4"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
