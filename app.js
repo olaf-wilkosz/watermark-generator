@@ -18,8 +18,10 @@ addTextWatermarkToImage('./test.jpg', './test-with-watermark.jpg', 'Hello world'
 const addImageWatermarkToImage = async function(inputFile, outputFile, watermarkFile) {
   const image = await Jimp.read(inputFile);
   const watermark = await Jimp.read(watermarkFile);
+  const x = image.getWidth() / 2 - watermark.getWidth() / 2;
+  const y = image.getHeight() / 2 - watermark.getHeight() / 2;
 
-  image.composite(watermark, 0, 0, {
+  image.composite(watermark, x, y, {
     mode: Jimp.BLEND_SOURCE_OVER,
     opacitySource: 0.5,
   });
