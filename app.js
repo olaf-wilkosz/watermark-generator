@@ -14,8 +14,6 @@ const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   await image.quality(100).writeAsync(outputFile);
 };
 
-// addTextWatermarkToImage('./test.jpg', './test-with-watermark.jpg', 'Hello world');
-
 const addImageWatermarkToImage = async function (inputFile, outputFile, watermarkFile) {
   const image = await Jimp.read(inputFile);
   const watermark = await Jimp.read(watermarkFile);
@@ -28,8 +26,6 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
   });
   await image.quality(100).writeAsync(outputFile);
 };
-
-// addImageWatermarkToImage('./test.jpg', './test-with-watermark2.jpg', './logo.png');
 
 const startApp = async () => {
 
@@ -62,6 +58,7 @@ const startApp = async () => {
       message: 'Type your watermark text:',
     }]);
     options.watermarkText = text.value;
+    addTextWatermarkToImage('./img/' + options.inputImage, './test-with-watermark.jpg', options.watermarkText);
   }
   else {
     const image = await inquirer.prompt([{
@@ -71,6 +68,7 @@ const startApp = async () => {
       default: 'logo.png',
     }]);
     options.watermarkImage = image.filename;
+    addImageWatermarkToImage('./img/' + options.inputImage, './test-with-watermark.jpg', './img/' + options.watermarkImage);
   }
 }
 
