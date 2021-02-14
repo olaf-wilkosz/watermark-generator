@@ -5,7 +5,7 @@ const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   const image = await Jimp.read(inputFile);
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
   const textData = {
-    text,
+    text: text,
     alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
     alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
   };
@@ -56,7 +56,7 @@ const startApp = async () => {
     choices: ['Text watermark', 'Image watermark'],
   }]);
 
-  if(options.watermarkType === 'Text watermark') {
+  if (options.watermarkType === 'Text watermark') {
     const text = await inquirer.prompt([{
       name: 'value',
       type: 'input',
@@ -71,10 +71,10 @@ const startApp = async () => {
       type: 'input',
       message: 'Type your watermark name:',
       default: 'logo.png',
-    }])
+    }]);
     options.watermarkImage = image.filename;
     addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + options.watermarkImage);
   }
-}
+};
 
 startApp();
