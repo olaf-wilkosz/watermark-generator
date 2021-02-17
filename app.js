@@ -33,8 +33,9 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
 };
 
 const prepareOutputFilename = (filename) => {
-  const [name, ext] = filename.split('.');
-  return `${name}-with-watermark.${ext}`;
+  const filenameParts = filename.split('.');
+  const ext = filenameParts[filenameParts.length - 1];
+  return `${filename.slice(0, filename.length - ext.length - 1)}-with-watermark.${ext}`;
 };
 
 const startApp = async () => {
