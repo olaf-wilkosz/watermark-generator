@@ -46,6 +46,12 @@ const prepareOutputFilename = (filename) => {
   return `${filename.slice(0, filename.length - ext.length - 1)}-with-watermark.${ext}`;
 };
 
+const prepareOutputFilenameIfEdited = (filename) => {
+  const filenameParts = filename.split('.');
+  const ext = filenameParts[filenameParts.length - 1];
+  return `${filename.slice(0, filename.length - ext.length - 1)}-edited.${ext}`;
+};
+
 const startApp = async () => {
 
   // Ask if user is ready
