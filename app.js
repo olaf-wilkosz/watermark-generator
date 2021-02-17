@@ -50,13 +50,16 @@ const startApp = async () => {
   // if answer is no, just quit the app
   if (!answer.start) process.exit();
 
-  // ask about input file and watermark type
-  const options = await inquirer.prompt([{
+  // ask about input file
+  const inputFile = await inquirer.prompt([{
     name: 'inputImage',
     type: 'input',
     message: 'What file do you want to mark?',
     default: 'test.jpg',
-  }, {
+  }]);
+
+  // ask about watermark type
+  const options = await inquirer.prompt([{
     name: 'watermarkType',
     type: 'list',
     choices: ['Text watermark', 'Image watermark'],
@@ -69,8 +72,8 @@ const startApp = async () => {
       message: 'Type your watermark text:',
     }]);
     options.watermarkText = text.value;
-    if (fs.existsSync('img/' + options.inputImage)) {
-      addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), options.watermarkText);
+    if (fs.existsSync('img/' + inputFile.inputImage)) {
+      addTextWatermarkToImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilename(inputFile.inputImage), options.watermarkText);
     } else {
       console.log('Something went wrong... Try again.');
     }
@@ -83,8 +86,8 @@ const startApp = async () => {
       default: 'logo.png',
     }]);
     options.watermarkImage = image.filename;
-    if (fs.existsSync('img/' + options.inputImage) && fs.existsSync('img/' + options.watermarkImage)) {
-      addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + options.watermarkImage);
+    if (fs.existsSync('img/' + inputFile.inputImage) && fs.existsSync('img/' + options.watermarkImage)) {
+      addImageWatermarkToImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilename(inputFile.inputImage), './img/' + options.watermarkImage);
     } else {
       console.log('Something went wrong... Try again.');
     }
