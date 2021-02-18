@@ -67,11 +67,7 @@ const addWatermark = async (inputFile) => {
       message: 'Type your watermark text:',
     }]);
     options.watermarkText = text.value;
-    if (fs.existsSync('img/' + inputFile.inputImage)) {
-      addTextWatermarkToImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilename(inputFile.inputImage), options.watermarkText);
-    } else {
-      console.log('Something went wrong... Try again.');
-    }
+    addTextWatermarkToImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilename(inputFile.inputImage), options.watermarkText);
   }
   else {
     const image = await inquirer.prompt([{
@@ -81,7 +77,7 @@ const addWatermark = async (inputFile) => {
       default: 'logo.png',
     }]);
     options.watermarkImage = image.filename;
-    if (fs.existsSync('img/' + inputFile.inputImage) && fs.existsSync('img/' + options.watermarkImage)) {
+    if (fs.existsSync('img/' + options.watermarkImage)) {
       addImageWatermarkToImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilename(inputFile.inputImage), './img/' + options.watermarkImage);
     } else {
       console.log('Something went wrong... Try again.');
@@ -90,48 +86,64 @@ const addWatermark = async (inputFile) => {
 }
 
 const makeImageBrighter = async function (inputFile, outputFile, brightness) {
-  const image = await Jimp.read(inputFile);
-  image.brightness(Number(brightness.value));
+  try {
+    const image = await Jimp.read(inputFile);
+    image.brightness(Number(brightness.value));
 
-  await image.quality(100).writeAsync(outputFile);
-  console.log('Image with adjusted brightness successfully created!');
+    await image.quality(100).writeAsync(outputFile);
+    console.log('Image with adjusted brightness successfully created!');
 
-  inputFile = { inputImage: outputFile.slice(6) };
-  addWatermark(inputFile);
+    inputFile = { inputImage: outputFile.slice(6) };
+    addWatermark(inputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!')
+  }
 }
 
 const increaseContrast = async function (inputFile, outputFile, contrast) {
-  const image = await Jimp.read(inputFile);
-  image.contrast(Number(contrast.value));
+  try {
+    const image = await Jimp.read(inputFile);
+    image.contrast(Number(contrast.value));
 
-  await image.quality(100).writeAsync(outputFile);
-  console.log('Image with adjusted contrast successfully created!');
+    await image.quality(100).writeAsync(outputFile);
+    console.log('Image with adjusted contrast successfully created!');
 
-  inputFile = { inputImage: outputFile.slice(6) };
-  addWatermark(inputFile);
+    inputFile = { inputImage: outputFile.slice(6) };
+    addWatermark(inputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!')
+  }
 }
 
 const makeImageBnW = async function (inputFile, outputFile) {
-  const image = await Jimp.read(inputFile);
-  image.grayscale();
-  image.contrast(1);
+  try {
+    const image = await Jimp.read(inputFile);
+    image.grayscale();
+    image.contrast(1);
 
-  await image.quality(100).writeAsync(outputFile);
-  console.log('Image with inverted colors successfully created!');
+    await image.quality(100).writeAsync(outputFile);
+    console.log('Image with inverted colors successfully created!');
 
-  inputFile = { inputImage: outputFile.slice(6) };
-  addWatermark(inputFile);
+    inputFile = { inputImage: outputFile.slice(6) };
+    addWatermark(inputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!')
+  }
 }
 
 const invertImage = async function (inputFile, outputFile) {
-  const image = await Jimp.read(inputFile);
-  image.invert();
+  try {
+    const image = await Jimp.read(inputFile);
+    image.invert();
 
-  await image.quality(100).writeAsync(outputFile);
-  console.log('Image with inverted colors successfully created!');
+    await image.quality(100).writeAsync(outputFile);
+    console.log('Image with inverted colors successfully created!');
 
-  inputFile = { inputImage: outputFile.slice(6) };
-  addWatermark(inputFile);
+    inputFile = { inputImage: outputFile.slice(6) };
+    addWatermark(inputFile);
+  } catch (error) {
+    console.log('Something went wrong... Try again!')
+  }
 }
 
 const inputPrompt = async function () {
