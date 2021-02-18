@@ -89,6 +89,67 @@ const addWatermark = async (inputFile) => {
   }
 }
 
+const makeImageBrighter = async function (inputFile, outputFile) {
+  const image = await Jimp.read(inputFile);
+  image.brightness(0.5);
+
+  await image.quality(100).writeAsync(outputFile);
+  console.log('Image with increased brightness successfully created!');
+
+  inputFile = { inputImage: outputFile.slice(6) };
+  addWatermark(inputFile);
+}
+
+const increaseContrast = async function (inputFile, outputFile) {
+  const image = await Jimp.read(inputFile);
+  image.contrast(0.5);
+
+  await image.quality(100).writeAsync(outputFile);
+  console.log('Image with increased contrast successfully created!');
+
+  inputFile = { inputImage: outputFile.slice(6) };
+  addWatermark(inputFile);
+}
+
+const makeImageBnW = async function (inputFile, outputFile) {
+  const image = await Jimp.read(inputFile);
+  image.grayscale();
+  image.contrast(1);
+
+  await image.quality(100).writeAsync(outputFile);
+  console.log('Image with inverted colors successfully created!');
+
+  inputFile = { inputImage: outputFile.slice(6) };
+  addWatermark(inputFile);
+}
+
+const invertImage = async function (inputFile, outputFile) {
+  const image = await Jimp.read(inputFile);
+  image.invert();
+
+  await image.quality(100).writeAsync(outputFile);
+  console.log('Image with inverted colors successfully created!');
+
+  inputFile = { inputImage: outputFile.slice(6) };
+  addWatermark(inputFile);
+}
+
+const inputPrompt = async function () {
+  const inputFile = await inquirer.prompt([{
+    name: 'inputImage',
+    type: 'input',
+    message: 'What file do you want to mark?',
+    default: 'test.jpg',
+  }]);
+  if (fs.existsSync('img/' + inputFile.inputImage)) {
+    return inputFile;
+  } else {
+    console.log('Something went wrong... Try again.');
+    const inputFile = await inputPrompt();
+    return inputFile;
+  }
+}
+
 const startApp = async () => {
 
   // Ask if user is ready
@@ -101,13 +162,8 @@ const startApp = async () => {
   // if answer is no, just quit the app
   if (!answer.start) process.exit();
 
-  // ask about input file
-  const inputFile = await inquirer.prompt([{
-    name: 'inputImage',
-    type: 'input',
-    message: 'What file do you want to mark?',
-    default: 'test.jpg',
-  }]);
+  // // ask about input file
+  const inputFile = await inputPrompt();
 
   // Ask if user is ready
   const editPrompt = await inquirer.prompt([{
@@ -127,7 +183,22 @@ const startApp = async () => {
         'make image b&w',
         'invert image'
       ]
-    }])
+    }]);
+
+    switch (editOptions.optionName) {
+      case 'make image brighter':
+        makeImageBrighter('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        break;
+      case 'increase contrast':
+        increaseContrast('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        break;
+      case 'make image b&w':
+        makeImageBnW('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        break;
+      case 'invert image':
+        invertImage('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        break;
+    };
   }
   else {
     addWatermark(inputFile);
