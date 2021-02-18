@@ -146,6 +146,17 @@ const invertImage = async function (inputFile, outputFile) {
   }
 }
 
+const answerPrompt = async function () {
+  const answer = await inquirer.prompt([{
+    name: 'start',
+    message: 'Hi! Welcome to "Watermark manager". Copy your image files to `/img` folder. Then you\'ll be able to use them in the app. Are you ready?',
+    type: 'confirm'
+  }]);
+
+  // if answer is no, just quit the app
+  if (!answer.start) process.exit();
+}
+
 const inputPrompt = async function () {
   const inputFile = await inquirer.prompt([{
     name: 'inputImage',
@@ -165,14 +176,7 @@ const inputPrompt = async function () {
 const startApp = async () => {
 
   // Ask if user is ready
-  const answer = await inquirer.prompt([{
-    name: 'start',
-    message: 'Hi! Welcome to "Watermark manager". Copy your image files to `/img` folder. Then you\'ll be able to use them in the app. Are you ready?',
-    type: 'confirm'
-  }]);
-
-  // if answer is no, just quit the app
-  if (!answer.start) process.exit();
+  await answerPrompt();
 
   // // ask about input file
   const inputFile = await inputPrompt();
