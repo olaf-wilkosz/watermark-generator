@@ -89,23 +89,23 @@ const addWatermark = async (inputFile) => {
   }
 }
 
-const makeImageBrighter = async function (inputFile, outputFile) {
+const makeImageBrighter = async function (inputFile, outputFile, brightness) {
   const image = await Jimp.read(inputFile);
-  image.brightness(0.5);
+  image.brightness(Number(brightness.value));
 
   await image.quality(100).writeAsync(outputFile);
-  console.log('Image with increased brightness successfully created!');
+  console.log('Image with adjusted brightness successfully created!');
 
   inputFile = { inputImage: outputFile.slice(6) };
   addWatermark(inputFile);
 }
 
-const increaseContrast = async function (inputFile, outputFile) {
+const increaseContrast = async function (inputFile, outputFile, contrast) {
   const image = await Jimp.read(inputFile);
-  image.contrast(0.5);
+  image.contrast(Number(contrast.value));
 
   await image.quality(100).writeAsync(outputFile);
-  console.log('Image with increased contrast successfully created!');
+  console.log('Image with adjusted contrast successfully created!');
 
   inputFile = { inputImage: outputFile.slice(6) };
   addWatermark(inputFile);
@@ -187,10 +187,22 @@ const startApp = async () => {
 
     switch (editOptions.optionName) {
       case 'make image brighter':
-        makeImageBrighter('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        const brightness = await inquirer.prompt([{
+          name: 'value',
+          type: 'input',
+          message: 'Type amount to adjust the brightness, a number between -1 and +1:',
+          default: 0.5,
+        }]);
+        makeImageBrighter('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage), brightness);
         break;
       case 'increase contrast':
-        increaseContrast('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
+        const contrast = await inquirer.prompt([{
+          name: 'value',
+          type: 'input',
+          message: 'Type amount to adjust the contrast, a number between -1 and +1:',
+          default: 0.5,
+        }]);
+        increaseContrast('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage), contrast);
         break;
       case 'make image b&w':
         makeImageBnW('./img/' + inputFile.inputImage, './img/' + prepareOutputFilenameIfEdited(inputFile.inputImage));
