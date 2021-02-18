@@ -42,14 +42,14 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
 
 const prepareOutputFilename = (filename) => {
   const filenameParts = filename.split('.');
-  const ext = filenameParts[filenameParts.length - 1];
-  return `${filename.slice(0, filename.length - ext.length - 1)}-with-watermark.${ext}`;
+  const ext = filenameParts.pop();
+  return `${filenameParts.join(".")}-with-watermark.${ext}`;
 };
 
 const prepareOutputFilenameIfEdited = (filename) => {
   const filenameParts = filename.split('.');
-  const ext = filenameParts[filenameParts.length - 1];
-  return `${filename.slice(0, filename.length - ext.length - 1)}-edited.${ext}`;
+  const ext = filenameParts.pop();
+  return `${filenameParts.join(".")}-edited.${ext}`;
 };
 
 const addWatermark = async (inputFile) => {
