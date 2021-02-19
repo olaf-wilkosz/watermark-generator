@@ -88,6 +88,7 @@ const addWatermark = async (inputFile) => {
 const makeImageBrighter = async function (inputFile, outputFile, brightness) {
   try {
     const image = await Jimp.read(inputFile);
+    if (isNaN(Number(brightness.value))) throw new Error('Wrong brightness!');
     image.brightness(Number(brightness.value));
 
     await image.quality(100).writeAsync(outputFile);
@@ -96,13 +97,18 @@ const makeImageBrighter = async function (inputFile, outputFile, brightness) {
     inputFile = { inputImage: outputFile.slice(6) };
     addWatermark(inputFile);
   } catch (error) {
-    console.log('Something went wrong... Try again!')
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log('Something went wrong... Try again!')
+    }
   }
 }
 
 const increaseContrast = async function (inputFile, outputFile, contrast) {
   try {
     const image = await Jimp.read(inputFile);
+    if (isNaN(Number(contrast.value))) throw new Error('Wrong contrast!');
     image.contrast(Number(contrast.value));
 
     await image.quality(100).writeAsync(outputFile);
@@ -111,7 +117,11 @@ const increaseContrast = async function (inputFile, outputFile, contrast) {
     inputFile = { inputImage: outputFile.slice(6) };
     addWatermark(inputFile);
   } catch (error) {
-    console.log('Something went wrong... Try again!')
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log('Something went wrong... Try again!')
+    }
   }
 }
 
